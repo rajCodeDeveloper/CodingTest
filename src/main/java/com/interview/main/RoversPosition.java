@@ -1,25 +1,46 @@
 package com.interview.main;
 
+import java.io.BufferedReader;
+import java.io.File;
+
+import java.io.FileReader;
+import java.io.IOException;
+
 import com.interview.pojo.RoverCoordinates;
 
 public class RoversPosition {
 
-	public static void main(String[] args) {
+	public void startProcess(File file) throws IOException{
+		String maxCoordinates=null;
+		BufferedReader br=null;
+		if(file.exists()){
+				br= new BufferedReader(new FileReader(file));
+				if(br!=null){
+				 String content =  br.readLine();
+				 maxCoordinates = content;
+				 while(content!=null){
+					 content = br.readLine();
+					 if(content!=null){
+						 String[] str =content.split(" ");
+						 int x =Integer.parseInt(str[0]);
+						 int y=Integer.parseInt(str[1]);
+						 Character direction =str[2].charAt(0);
+						 RoverCoordinates coordinates = new RoverCoordinates(x,y,direction);
+						 String pattern  = br.readLine();
+						 coordinates = getRoverCoordinates(coordinates,pattern);
+					 }
+					
+				 }
+			}
 		
-		
-		
-		
-	
-		
-		
-
+		}
 	}
-	
 	public RoverCoordinates getRoverCoordinates(RoverCoordinates coordinates, String roverPattern){
 		RoversPosition roversPosition= new RoversPosition();
 		for(int i=0;i<roverPattern.length();i++){
 			coordinates = roversPosition.getRoverCoordinatesBasedOnPattern(roverPattern.charAt(i),coordinates);
 		}	
+		System.out.println(coordinates);
 		return coordinates;
 	}
 	
